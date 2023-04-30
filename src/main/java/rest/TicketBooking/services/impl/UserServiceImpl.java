@@ -4,11 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import rest.TicketBooking.dto.AdminUserDto;
 import rest.TicketBooking.model.Role;
 import rest.TicketBooking.model.Status;
 import rest.TicketBooking.model.User;
 import rest.TicketBooking.repositories.RoleRepository;
 import rest.TicketBooking.repositories.UserRepository;
+import rest.TicketBooking.services.AdminUserService;
 import rest.TicketBooking.services.UserService;
 
 import javax.persistence.EntityNotFoundException;
@@ -17,7 +19,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, AdminUserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -38,18 +40,13 @@ public class UserServiceImpl implements UserService {
     public User register(User user) {
 
         Role roleUser = roleRepository.findByName("ROLE_USER");
-        List<Role> userRoles = new ArrayList<>();
-        userRoles.add(roleUser);
+        return registerUserWithRole(user, roleUser);
+    }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(userRoles);
-        user.setStatus(Status.ACTIVE);
-
-        User registeredUser = userRepository.save(user);
-
-        log.info("IN register - user: {} successfully registered", registeredUser);
-
-        return registeredUser;
+    @Override
+    public User registerAdmin(User user) {
+        Role roleUser = roleRepository.findByName("ROLE_ADMIN");
+        return registerUserWithRole(user, roleUser);
     }
 
     @Override
@@ -87,4 +84,19 @@ public class UserServiceImpl implements UserService {
         log.info("IN delete - user with id: {} successfully deleted");
     }
 
+
+    private User registerUserWithRole(User user, Role roleUser) {
+        List<Role> userRoles = new ArrayList<>();
+        userRoles.add(roleUser);
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(userRoles);
+        user.setStatus(Status.ACTIVE);
+
+        User registeredUser = userRepository.save(user);
+
+        log.info("IN register - user: {} successfully registered", registeredUser);
+
+        return registeredUser;
+    }
 }

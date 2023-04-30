@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rest.TicketBooking.dto.AdminUserDto;
 import rest.TicketBooking.model.User;
+import rest.TicketBooking.services.MapperService;
 import rest.TicketBooking.services.UserService;
 
 @RestController
@@ -17,9 +18,12 @@ public class AdminRestControllerV1 {
 
     private final UserService userService;
 
+    private final MapperService mapperService;
+
     @Autowired
-    public AdminRestControllerV1(UserService userService) {
+    public AdminRestControllerV1(UserService userService, MapperService mapperService) {
         this.userService = userService;
+        this.mapperService = mapperService;
     }
 
     @GetMapping(value = "users/{id}")
@@ -30,7 +34,7 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        AdminUserDto result = AdminUserDto.fromUser(user);
+        AdminUserDto result = mapperService.convertToAdminUserDto(user);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

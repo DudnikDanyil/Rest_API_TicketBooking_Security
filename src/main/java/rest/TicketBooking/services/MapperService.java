@@ -3,6 +3,7 @@ package rest.TicketBooking.services;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import rest.TicketBooking.dto.AdminUserDto;
 import rest.TicketBooking.dto.UserDtoInput;
 import rest.TicketBooking.dto.UserDtoOutput;
 import rest.TicketBooking.model.User;
@@ -23,5 +24,9 @@ public class MapperService {
 
     public UserDtoOutput convertToUserDto(User user) {
         return modelMapper.map(user, UserDtoOutput.class);
+    }
+
+    public AdminUserDto convertToAdminUserDto(User user) {
+        return modelMapper.map(user, AdminUserDto.class);
     }
 }
