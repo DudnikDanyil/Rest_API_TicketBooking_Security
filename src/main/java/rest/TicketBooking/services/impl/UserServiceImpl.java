@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(User user) {
+
         Role roleUser = roleRepository.findByName("ROLE_USER");
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
@@ -84,4 +86,5 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
         log.info("IN delete - user with id: {} successfully deleted");
     }
+
 }

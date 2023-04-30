@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rest.TicketBooking.dto.AdminUserDto;
-import rest.TicketBooking.dto.UserDto;
 import rest.TicketBooking.model.User;
 import rest.TicketBooking.services.UserService;
 

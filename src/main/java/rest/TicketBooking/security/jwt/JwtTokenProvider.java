@@ -26,13 +26,11 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-
     @Value("${jwt.token.secret}")
     private String secret;
 
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
-
 
     @Autowired
     private UserDetailsService userDetailsService;
