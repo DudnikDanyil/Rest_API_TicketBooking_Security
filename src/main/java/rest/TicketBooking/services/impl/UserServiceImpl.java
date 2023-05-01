@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import rest.TicketBooking.dto.AdminUserDto;
 import rest.TicketBooking.model.Role;
 import rest.TicketBooking.model.Status;
 import rest.TicketBooking.model.User;
@@ -45,6 +44,7 @@ public class UserServiceImpl implements UserService, AdminUserService {
 
     @Override
     public User registerAdmin(User user) {
+
         Role roleUser = roleRepository.findByName("ROLE_ADMIN");
         return registerUserWithRole(user, roleUser);
     }
@@ -99,4 +99,6 @@ public class UserServiceImpl implements UserService, AdminUserService {
 
         return registeredUser;
     }
+
+
 }
