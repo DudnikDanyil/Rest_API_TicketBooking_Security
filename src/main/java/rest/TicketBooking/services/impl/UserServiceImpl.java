@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import rest.TicketBooking.exceptions.UserAlreadyExistsException;
 import rest.TicketBooking.model.Role;
 import rest.TicketBooking.model.Status;
 import rest.TicketBooking.model.User;
@@ -38,12 +39,16 @@ public class UserServiceImpl implements UserService, AdminUserService {
     @Override
     public User register(User user) {
 
+        checkIfUserExists(user);
+
         Role roleUser = roleRepository.findByName("ROLE_USER");
         return registerUserWithRole(user, roleUser);
     }
 
     @Override
     public User registerAdmin(User user) {
+
+        checkIfUserExists(user);
 
         Role roleUser = roleRepository.findByName("ROLE_ADMIN");
         return registerUserWithRole(user, roleUser);
@@ -100,5 +105,12 @@ public class UserServiceImpl implements UserService, AdminUserService {
         return registeredUser;
     }
 
-
+    private void checkIfUserExists(User user) throws UserAlreadyExistsException {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new UserAlreadyExistsException("User with username " + user.getUsername() + " already exists");
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new UserAlreadyExistsException("User with email " + user.getEmail() + " already exists");
+        }
+    }
 }
