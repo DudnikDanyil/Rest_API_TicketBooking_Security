@@ -3,7 +3,7 @@ package rest.TicketBooking.security.jwt;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import rest.TicketBooking.model.Role;
-import rest.TicketBooking.model.Status;
+import rest.TicketBooking.model.emuns.Status;
 import rest.TicketBooking.model.User;
 
 import java.util.ArrayList;

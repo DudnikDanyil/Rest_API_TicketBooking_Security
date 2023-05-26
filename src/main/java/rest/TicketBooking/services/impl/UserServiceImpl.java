@@ -4,9 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import rest.TicketBooking.exceptions.SuperAdminDeletionException;
 import rest.TicketBooking.exceptions.UserAlreadyExistsException;
 import rest.TicketBooking.model.Role;
-import rest.TicketBooking.model.Status;
+import rest.TicketBooking.model.emuns.Status;
 import rest.TicketBooking.model.User;
 import rest.TicketBooking.repositories.RoleRepository;
 import rest.TicketBooking.repositories.UserRepository;
@@ -32,7 +33,6 @@ public class UserServiceImpl implements UserService, AdminUserService {
                            BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -72,25 +72,35 @@ public class UserServiceImpl implements UserService, AdminUserService {
 
     @Override
     public User findById(Integer id) {
+
         User result = userRepository.findById(id).orElse(null);
 
         if (result == null) {
             log.warn("IN findById - no user found by id: {}", id);
             throw new EntityNotFoundException("User with id " + id + " not found");
         }
-
-        log.info("IN findById - user: {} found by id: {}", result);
-        return result;
+            log.info("IN findById - user: {} found by id: {}", result);
+            return result;
     }
 
     @Override
     public void delete(Integer id) {
+
+        User user = userRepository.findById(id).get();
+        for (Role role : user.getRoles()) {
+            System.out.println(role.getName());
+            if (role.getName().equals("ROLE_SUPER_ADMIN")) {
+                throw new SuperAdminDeletionException("It is forbidden to delete a user with a role SUPER_ADMIN!");
+            }
+        }
+
         userRepository.deleteById(id);
-        log.info("IN delete - user with id: {} successfully deleted");
+        log.info("IN delete - user with id: {} successfully deleted", id);
     }
 
 
     private User registerUserWithRole(User user, Role roleUser) {
+
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
 

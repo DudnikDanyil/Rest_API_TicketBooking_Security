@@ -2,8 +2,6 @@ package rest.TicketBooking.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import rest.TicketBooking.model.Status;
-import rest.TicketBooking.model.User;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

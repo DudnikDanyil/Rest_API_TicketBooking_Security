@@ -1,6 +1,7 @@
 package rest.TicketBooking.model;
 
 import lombok.Data;
+import rest.TicketBooking.model.emuns.Status;
 
 import javax.persistence.*;
 

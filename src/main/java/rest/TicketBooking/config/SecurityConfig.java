@@ -17,15 +17,12 @@ import rest.TicketBooking.security.jwt.JwtTokenProvider;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
-
-    private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
-    private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
-    private static final String REGISTRATION_ENDPOINT = "/api/registr";
-    private static final String REGISTRATION_ADMIN_ENDPOINT = "/api/registr/admin";
+    private final SecurityConstants securityConstants;
 
     @Autowired
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider, SecurityConstants securityConstants) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.securityConstants = securityConstants;
     }
 
     @Bean
@@ -42,10 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT).permitAll()
-                .antMatchers(ADMIN_ENDPOINT).hasAnyRole("ADMIN", "SUPER_ADMIN")
-                .antMatchers(REGISTRATION_ADMIN_ENDPOINT).hasRole("SUPER_ADMIN")
-                .antMatchers(REGISTRATION_ENDPOINT).permitAll()
+                .antMatchers(securityConstants.LOGIN_ENDPOINT).permitAll()
+                .antMatchers(securityConstants.ADMIN_ENDPOINT,
+                        securityConstants.DELETE_USER_ENDPOINT).hasAnyRole("ADMIN", "SUPER_ADMIN")
+                .antMatchers(securityConstants.REGISTRATION_ADMIN_ENDPOINT).hasRole("SUPER_ADMIN")
+                .antMatchers(securityConstants.REGISTRATION_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));

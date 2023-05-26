@@ -1,6 +1,5 @@
 package rest.TicketBooking.controllers;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +13,12 @@ import rest.TicketBooking.services.UserService;
 @RequestMapping(value = "/api")
 public class RegistrationRestController {
 
-    private final ModelMapper modelMapper;
     private final UserService userService;
     private final MapperService mapperService;
 
     @Autowired
-    public RegistrationRestController(ModelMapper modelMapper, UserService userService, MapperService mapperService) {
-        this.modelMapper = modelMapper;
+    public RegistrationRestController(UserService userService,
+                                      MapperService mapperService) {
         this.userService = userService;
         this.mapperService = mapperService;
     }
