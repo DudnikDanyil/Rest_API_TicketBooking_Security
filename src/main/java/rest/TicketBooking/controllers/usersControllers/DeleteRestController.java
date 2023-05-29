@@ -1,4 +1,4 @@
-package rest.TicketBooking.controllers;
+package rest.TicketBooking.controllers.usersControllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
