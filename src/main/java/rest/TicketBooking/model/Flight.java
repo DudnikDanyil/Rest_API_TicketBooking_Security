@@ -3,6 +3,7 @@ package rest.TicketBooking.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Flight extends BaseEntity{
         private LocalDateTime date_and_time_of_arrival;
 
         @Column(name = "flight_price")
-        private int flight_price;
+        private BigDecimal flight_price;
 
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "booking",
