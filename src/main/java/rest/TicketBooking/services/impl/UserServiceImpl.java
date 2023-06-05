@@ -88,7 +88,6 @@ public class UserServiceImpl implements UserService, AdminUserService {
 
         User user = userRepository.findById(id).get();
         for (Role role : user.getRoles()) {
-            System.out.println(role.getName());
             if (role.getName().equals("ROLE_SUPER_ADMIN")) {
                 throw new SuperAdminDeletionException("It is forbidden to delete a user with a role SUPER_ADMIN!");
             }
