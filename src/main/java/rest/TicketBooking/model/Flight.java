@@ -32,4 +32,8 @@ public class Flight extends BaseEntity{
                 joinColumns = {@JoinColumn(name = "flight_id", referencedColumnName = "id")},
                 inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
         private List<User> users;
+
+        @ManyToOne
+        @JoinColumn(name = "airline_id")
+        private Airline airline;
 }
