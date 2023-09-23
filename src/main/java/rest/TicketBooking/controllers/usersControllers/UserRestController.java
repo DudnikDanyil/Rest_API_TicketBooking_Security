@@ -1,26 +1,40 @@
 package rest.TicketBooking.controllers.usersControllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rest.TicketBooking.dto.AdminUserDto;
 import rest.TicketBooking.dto.UserDtoInput;
 import rest.TicketBooking.dto.UserDtoOutput;
+import rest.TicketBooking.model.User;
 import rest.TicketBooking.services.MapperService;
 import rest.TicketBooking.services.UserService;
 
-@RestController
-@RequestMapping(value = "/api")
-public class RegistrationRestController {
 
+@RestController
+@RequestMapping(value = "/api/users/")
+public class UserRestController {
     private final UserService userService;
     private final MapperService mapperService;
 
     @Autowired
-    public RegistrationRestController(UserService userService,
-                                      MapperService mapperService) {
+    public UserRestController(UserService userService,
+                              MapperService mapperService) {
         this.userService = userService;
         this.mapperService = mapperService;
+    }
+
+    @GetMapping(value = "{id}")
+    public ResponseEntity<UserDtoOutput> getUserById(@PathVariable(name = "id") int id) {
+        User user = userService.findById(id);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        UserDtoOutput result = mapperService.convertToUserDto(user);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping(value = "/registr")
@@ -32,13 +46,12 @@ public class RegistrationRestController {
         return ResponseEntity.ok(userDtoOutput);
     }
 
-    @PostMapping(value = "/registr/admin")
-    public ResponseEntity<AdminUserDto> registrationUserAdmin(@RequestBody UserDtoInput userDtoInput) {
+    @DeleteMapping(value = "/delete")
+    public ResponseEntity<Void> deletingUser(@RequestParam("id") Integer id) {
 
-        AdminUserDto adminUserDto = mapperService.convertToAdminUserDto(userService
-                .register(mapperService.convertToUser(userDtoInput)));
+        userService.delete(id);
 
-        return ResponseEntity.ok(adminUserDto);
+        return ResponseEntity.ok().build();
     }
 
 }

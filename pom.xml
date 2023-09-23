@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
     <groupId>net.proselyte</groupId>
-    <artifactId>jwtappdemo</artifactId>
+    <artifactId>TicketBooking</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>TicketBooking</name>
     <description>Spring security REST API</description>
@@ -65,6 +65,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
             <optional>true</optional>
         </dependency>
         <dependency>

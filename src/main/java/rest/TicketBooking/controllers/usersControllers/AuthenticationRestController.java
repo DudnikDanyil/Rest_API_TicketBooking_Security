@@ -17,17 +17,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/api/v1/auth/")
-public class AuthenticationRestControllerV1 {
+@RequestMapping(value = "/api/auth/")
+public class AuthenticationRestController {
 
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider jwtTokenProvider;
     private UserService userService;
 
     @Autowired
-    public AuthenticationRestControllerV1(AuthenticationManager authenticationManager,
-                                          JwtTokenProvider jwtTokenProvider,
-                                          UserService userService) {
+    public AuthenticationRestController(AuthenticationManager authenticationManager,
+                                        JwtTokenProvider jwtTokenProvider,
+                                        UserService userService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
